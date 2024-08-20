@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import click
 import os
 import requests
@@ -6,10 +9,10 @@ import requests
 @click.argument('username')
 def activity(username):
     url = f"https://api.github.com/users/{username}/events"
-    headers = {"Accept": "application/vnd.github.v3+json"}
+    headers = {"X-GitHub-Api-Version": "2022-11-28", "Accept": "application/vnd.github+json"}
 
     if os.environ['GITHUB_TOKEN']:
-        headers['Authorization'] = f"token {os.environ['GITHUB_TOKEN']}"
+        headers['Authorization'] = f"Bearer {os.environ.get('GITHUB_TOKEN')}"
     
     response = requests.get(url, headers=headers)
 
